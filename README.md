@@ -4,6 +4,8 @@ A beautiful AI-powered notepad with intelligent autocomplete, inline quick edits
 
 ![Notepai Composer](public/composer.png)
 
+🔗 **Try it live:** [notepai.netlify.app](https://notepai.netlify.app)
+
 ## ✨ Features
 
 ### 📝 Smart Autocomplete
