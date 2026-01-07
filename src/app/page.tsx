@@ -501,7 +501,12 @@ export default function Home() {
 
       // Only set ghost text if this is still the latest request
       if (requestId === requestIdRef.current && data.completion && data.completion.trim()) {
-        setGhostText(data.completion);
+        // Add space before completion if needed
+        const needsSpace = text.length > 0 && 
+          /\S$/.test(text) && // text ends with non-whitespace
+          /^[^\s.,!?;:'"\-\n]/.test(data.completion); // completion starts with a word character
+        
+        setGhostText((needsSpace ? ' ' : '') + data.completion);
       }
     } catch (error) {
       console.error("Autocomplete error:", error);
@@ -763,7 +768,7 @@ export default function Home() {
 
       e.preventDefault();
 
-      // If ghost text exists, accept it
+      // If ghost text exists, accept it (space is already included in ghostText if needed)
       if (ghostText) {
         const newContent = content + ghostText;
         setContent(newContent);
@@ -1933,23 +1938,23 @@ export default function Home() {
 
         {/* Keyboard shortcuts hint */}
         {!showDiffPreview && !quickEditMode && !composerOpen && (
-          <div className="fixed bottom-10 right-4 text-xs text-muted-foreground/60 font-sans flex flex-col items-end gap-1.5">
-            <div className="flex items-center gap-2">
+          <div className="fixed bottom-12 right-6 text-sm text-muted-foreground/70 font-sans flex flex-col items-end gap-2.5">
+            <div className="flex items-center gap-3">
               <span>autocomplete</span>
-              <kbd className="px-1.5 py-0.5 bg-white/70 border border-border/50 rounded shadow-sm">Tab</kbd>
+              <kbd className="px-2.5 py-1 bg-white/80 border border-border/60 rounded-md shadow-sm text-xs font-medium">Tab</kbd>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <span>quick edit</span>
-              <div className="flex gap-0.5">
-                <kbd className="px-1.5 py-0.5 bg-white/70 border border-border/50 rounded shadow-sm">Cmd</kbd>
-                <kbd className="px-1.5 py-0.5 bg-white/70 border border-border/50 rounded shadow-sm">K</kbd>
+              <div className="flex gap-1">
+                <kbd className="px-2.5 py-1 bg-white/80 border border-border/60 rounded-md shadow-sm text-xs font-medium">Cmd</kbd>
+                <kbd className="px-2.5 py-1 bg-white/80 border border-border/60 rounded-md shadow-sm text-xs font-medium">K</kbd>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <span>composer</span>
-              <div className="flex gap-0.5">
-                <kbd className="px-1.5 py-0.5 bg-white/70 border border-border/50 rounded shadow-sm">Cmd</kbd>
-                <kbd className="px-1.5 py-0.5 bg-white/70 border border-border/50 rounded shadow-sm">I</kbd>
+              <div className="flex gap-1">
+                <kbd className="px-2.5 py-1 bg-white/80 border border-border/60 rounded-md shadow-sm text-xs font-medium">Cmd</kbd>
+                <kbd className="px-2.5 py-1 bg-white/80 border border-border/60 rounded-md shadow-sm text-xs font-medium">I</kbd>
               </div>
             </div>
           </div>
